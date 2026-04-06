@@ -1,13 +1,6 @@
-import { RubyValue } from './ruby_value';
+import { EmulatorState } from './emulator_state';
 
-export interface CallData {
-  mid: string;
-  flag: number;
-  orig_argc: number;
+export interface Instruction {
+  readonly name: string;
+  execute(state: EmulatorState): EmulatorState;
 }
-
-export type Instruction =
-  | { name: 'putobject_INT2FIX_1_' }
-  | { name: 'putobject'; operand: RubyValue }
-  | { name: 'opt_plus'; operand: CallData }
-  | { name: 'leave' };
