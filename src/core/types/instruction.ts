@@ -1,6 +1,5 @@
-import { RubyValue } from './ruby_value';
+import type { EmulatorState } from './emulator_state';
 
-export type Instruction =
-  | { name: 'putobject'; operand: RubyValue }
-  | { name: 'opt_plus' }
-  | { name: 'leave' };
+export interface Instruction {
+  execute(state: EmulatorState): EmulatorState;
+}
