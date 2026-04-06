@@ -1,5 +1,5 @@
 import { it, expect } from 'vitest';
-import { EmulatorState } from '../../../src/core/types/emulator_state';
+import type { EmulatorState } from '../../../src/core/types/emulator_state';
 import { step } from '../../../src/core/emulator';
 import putobject_INT2FIX_1_ from '../../../src/core/instructions/putobject_INT2FIX_1_';
 
