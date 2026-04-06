@@ -2,7 +2,6 @@ import { EmulatorState } from '../types/emulator_state';
 import { Instruction } from '../types/instruction';
 
 const instruction: Instruction = {
-  name: 'putobject_INT2FIX_1_',
   execute(state: EmulatorState): EmulatorState {
     return {
       ...state,
