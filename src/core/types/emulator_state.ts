@@ -1,6 +1,5 @@
-import type { RubyValue } from './ruby_value';
+import type { Frame } from './frame';
 
 export interface EmulatorState {
-  pc: number;
-  stack: RubyValue[];
+  frames: Frame[];
 }
