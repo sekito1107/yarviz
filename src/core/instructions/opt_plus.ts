@@ -1,31 +1,22 @@
-import type { EmulatorState } from '../types/emulator_state';
-import type { Instruction } from '../types/instruction';
+import { Base } from './base';
 
-/**
- * Optimized addition instruction (opt_plus).
- */
-const instruction = (callData: any): Instruction => ({
-  callData,
-  execute(state: EmulatorState): EmulatorState {
-    const { stack } = state;
-    const right = stack[stack.length - 1];
-    const left = stack[stack.length - 2];
+// Instruction for addition (+)
+export default class OptPlus extends Base {
+  constructor(public readonly callData: any) {
+    super();
+  }
 
-    if (left?.type === 'integer' && right?.type === 'integer') {
+  // Core execution logic for addition
+  protected call(): void {
+    const right = this.pop();
+    const left = this.pop();
+
+    if (left.type === 'integer' && right.type === 'integer') {
       const result = left.value + right.value;
-      const newStack = [
-        ...stack.slice(0, -2),
-        { type: 'integer', value: result } as const,
-      ];
-
-      return {
-        ...state,
-        stack: newStack,
-      };
+      this.push({ type: 'integer', value: result } as const);
+      return;
     }
 
-    throw new Error(`opt_plus: non-integer addition not implemented yet. (left: ${left?.type}, right: ${right?.type})`);
-  },
-});
-
-export default instruction;
+    throw new Error(`opt_plus: non-integer addition not implemented yet. (left: ${left.type}, right: ${right.type})`);
+  }
+}
