@@ -1,15 +1,14 @@
-import type { EmulatorState } from '../types/emulator_state';
-import type { Instruction } from '../types/instruction';
+import { Base } from './base';
 import type { RubyValue } from '../types/ruby_value';
 
-const instruction = (operand: RubyValue): Instruction => ({
-  operand,
-  execute(state: EmulatorState): EmulatorState {
-    return {
-      ...state,
-      stack: [...state.stack, this.operand],
-    };
-  },
-});
+// Instruction to push a literal object onto the operand stack.
+export default class PutObject extends Base {
+  constructor(public readonly operand: RubyValue) {
+    super();
+  }
 
-export default instruction;
+  // Core execution logic for pushing the operand
+  protected call(): void {
+    this.push(this.operand);
+  }
+}

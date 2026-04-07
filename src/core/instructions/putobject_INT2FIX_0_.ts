@@ -1,13 +1,9 @@
-import type { EmulatorState } from '../types/emulator_state';
-import type { Instruction } from '../types/instruction';
+import { Base } from './base';
 
-const instruction: Instruction = {
-  execute(state: EmulatorState): EmulatorState {
-    return {
-      ...state,
-      stack: [...state.stack, { type: 'integer', value: 0 }],
-    };
-  },
-};
-
-export default instruction;
+// Instruction to push 0 (INT2FIX(0)) onto the operand stack.
+export default class PutObjectInt2Fix0 extends Base {
+  // Core execution logic for pushing 0
+  protected call(): void {
+    this.push({ type: 'integer', value: 0 } as const);
+  }
+}
