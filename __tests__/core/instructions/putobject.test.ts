@@ -10,7 +10,7 @@ it('pushes the operand (integer 2) onto the stack', () => {
   };
 
   const operand = { type: 'integer', value: 2 } as const;
-  const instruction = new PutObjectInstruction(operand);
+  const instruction = PutObjectInstruction(operand);
 
   const nextState = step(initialState, instruction);
 
