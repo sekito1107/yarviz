@@ -59,4 +59,15 @@ export abstract class Base {
     const frame = this.currentFrame;
     this.currentFrame = { ...frame, stack: [...frame.stack, value] };
   }
+
+  // Pops the current execution frame from the frame stack.
+  // Returns the popped frame.
+  protected popFrame(): Frame {
+    const frame = this.currentFrame;
+    this.workingState = {
+      ...this.workingState,
+      frames: this.workingState.frames.slice(0, -1),
+    };
+    return frame;
+  }
 }
