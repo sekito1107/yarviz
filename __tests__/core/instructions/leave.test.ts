@@ -20,7 +20,6 @@ it('handles the final return of the execution (single frame)', () => {
   const nextState = step(initialState, instruction);
 
   expect(nextState.frames.length).toBe(0);
-  // @ts-expect-error
   expect(nextState.returnValue).toEqual({ type: 'integer', value: 1 });
 });
 
