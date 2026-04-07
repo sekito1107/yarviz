@@ -11,6 +11,11 @@ export abstract class Base {
   // Called by the emulator core.
   execute(state: EmulatorState): EmulatorState {
     this.workingState = { ...state };
+
+    // Advance PC of the current frame by default
+    const frame = this.currentFrame;
+    this.currentFrame = { ...frame, pc: frame.pc + 1 };
+    
     this.call();
 
     return this.workingState;
