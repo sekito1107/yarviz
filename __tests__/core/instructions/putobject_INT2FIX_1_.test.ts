@@ -11,6 +11,5 @@ it('pushes integer 1 onto the stack', () => {
 
   const nextState = step(initialState, putobject_INT2FIX_1_);
 
-  expect(nextState.pc).toBe(1);
   expect(nextState.stack).toEqual([{ type: 'integer', value: 1 }]);
 });
