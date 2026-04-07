@@ -1,7 +1,6 @@
 import { it, expect } from 'vitest';
 import type { EmulatorState } from '../../../src/core/types/emulator_state';
 import { step } from '../../../src/core/emulator';
-// @ts-expect-error
 import Leave from '../../../src/core/instructions/leave';
 
 it('handles the final return of the execution (single frame)', () => {
