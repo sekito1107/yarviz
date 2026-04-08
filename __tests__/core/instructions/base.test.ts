@@ -2,33 +2,28 @@ import { describe, it, expect } from 'vitest';
 import { Base } from '../../../src/core/instructions/base';
 import type { EmulatorState } from '../../../src/core/types/emulator_state';
 import type { RubyValue } from '../../../src/core/types/ruby_value';
+import { createStateWithBytecode } from './helper';
 
-// Mock instruction to test Base class functionality
 class MockInstruction extends Base {
   constructor(private action: (ins: MockInstruction) => void) {
     super();
   }
 
+  readonly opcode = 'mock';
+  readonly operandCount = 0;
+
+  protected parse(): void {}
+
   protected call(): void {
     this.action(this);
   }
 
-  // Expose protected methods for testing
   public testPush(val: RubyValue) { this.push(val); }
   public testPop() { return this.pop(); }
 }
 
 describe('Base Instruction', () => {
-  const initialState: EmulatorState = {
-    frames: [
-      {
-        name: 'main',
-        pc: 0,
-        stack: [],
-        iseq: [],
-      },
-    ],
-  };
+  const initialState = createStateWithBytecode([]);
 
   it('should increment PC automatically before calling logic', () => {
     const ins = new MockInstruction(() => {});

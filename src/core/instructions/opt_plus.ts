@@ -1,9 +1,14 @@
 import { Base } from './base';
+import type { ISeqEntry } from '../types/frame';
 
-// Instruction for addition (+)
+// YARV format: [:opt_plus, call_data]
 export default class OptPlus extends Base {
-  constructor(public readonly callData: any) {
-    super();
+  protected readonly operandCount = 1;
+  private callData: any;
+ 
+  protected parse(): void {
+    const frame = this.currentFrame;
+    this.callData = frame.iseq.bytecode[frame.pc + 1];
   }
 
   // Core execution logic for addition
@@ -17,6 +22,8 @@ export default class OptPlus extends Base {
       return;
     }
 
-    throw new Error(`opt_plus: non-integer addition not implemented yet. (left: ${left.type}, right: ${right.type})`);
+    throw new Error(
+      `opt_plus: non-integer addition not implemented yet. (left: ${left.type}, right: ${right.type}, call_data: ${JSON.stringify(this.callData)})`
+    );
   }
 }
