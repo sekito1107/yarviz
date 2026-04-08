@@ -1,25 +1,13 @@
 import { it, expect } from 'vitest';
-import type { EmulatorState } from '../../../src/core/types/emulator_state';
-import { step } from '../../../src/core/emulator';
 import PutObject from '../../../src/core/instructions/putobject';
+import { createStateWithBytecode } from './helper';
 
 it('pushes the operand (integer 2) onto the stack', () => {
-  const initialState: EmulatorState = {
-    frames: [
-      {
-        name: 'main',
-        pc: 0,
-        stack: [],
-        iseq: [],
-      },
-    ],
-  };
+  const initialState = createStateWithBytecode(['putobject', 2]);
 
-  const operand = { type: 'integer', value: 2 } as const;
-  const instruction = new PutObject(operand);
+  const instruction = new PutObject();
+  const nextState = instruction.execute(initialState);
 
-  const nextState = step(initialState, instruction);
-
-  expect(nextState.frames[0]!.stack).toEqual([operand]);
-  expect(nextState.frames[0]!.pc).toBe(1);
+  expect(nextState.frames[0]!.stack).toEqual([{ type: 'integer', value: 2 }]);
+  expect(nextState.frames[0]!.pc).toBe(2);
 });

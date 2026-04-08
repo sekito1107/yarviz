@@ -1,9 +1,10 @@
 import type { RubyValue } from './ruby_value';
-import type { Instruction } from './instruction';
+import type { ISeq } from './iseq';
 
 export interface Frame {
   name: string;
   pc: number;
   stack: RubyValue[];
-  iseq: Instruction[];
+  iseq: ISeq;
+  line?: number;
 }
