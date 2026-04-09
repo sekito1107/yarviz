@@ -2,9 +2,11 @@ import type { RubyValue } from './ruby_value';
 import type { ISeq } from './iseq';
 
 export interface Frame {
-  name: string;
+  iseq: ISeq;
   pc: number;
   stack: RubyValue[];
-  iseq: ISeq;
+  locals: Record<string, RubyValue>;
   line?: number;
 }
+
+
