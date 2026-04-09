@@ -1,11 +1,48 @@
 import type { ISeq } from './types/iseq';
 
-export function flatten(rawISeq: any[]): ISeq {
+/**
+ * Assembles a complete ISeq object from the raw Ruby YARV array (14 elements).
+ */
+export function assemble(rawYarv: any[]): ISeq {
+  const [
+    magic, major, minor, patch, config,
+    name, path, realpath, startLine, type,
+    locals, params, catchTable, rawBody
+  ] = rawYarv;
+
+  const { bytecode, lineMap } = parseBody(rawBody);
+
+  return {
+    bytecode,
+    lineMap,
+    magic,
+    version: { major, minor, patch },
+    config: {
+      arg_size: config.arg_size,
+      local_size: config.local_size,
+      stack_max: config.stack_max,
+      ...config
+    },
+    name,
+    path,
+    realpath,
+    startLine,
+    type,
+    locals,
+    params,
+    catchTable
+  };
+}
+
+/**
+ * Parses the instruction sequence body into a flat bytecode array and a line map.
+ */
+function parseBody(rawBody: any[]): { bytecode: (string | number)[], lineMap: Record<number, number> } {
   const bytecode: (string | number)[] = [];
   const lineMap: Record<number, number> = {};
   let currentLine = 0;
 
-  for (const entry of rawISeq) {
+  for (const entry of rawBody) {
     if (typeof entry === 'number') {
       currentLine = entry;
     } else if (Array.isArray(entry)) {
