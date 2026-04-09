@@ -3,7 +3,7 @@ import { assemble } from '../../src/core/loader';
 
 describe('assemble', () => {
   const createRawYarv = (body: any[]): any[] => [
-    'YARVInstructionSequenceData', 3, 0, 4,
+    'YARVInstructionSequence/SimpleDataFormat', 3, 1, 1,
     { arg_size: 0, local_size: 1, stack_max: 1 },
     'test_method', 'test.rb', '/absolute/test.rb', 1, 'top',
     [], {}, [],
@@ -16,7 +16,7 @@ describe('assemble', () => {
 
     expect(result.name).toBe('test_method');
     expect(result.path).toBe('test.rb');
-    expect(result.version).toEqual({ major: 3, minor: 0, patch: 4 });
+    expect(result.version).toEqual({ major: 3, minor: 1, patch: 1 });
     expect(result.config.arg_size).toBe(0);
   });
 
