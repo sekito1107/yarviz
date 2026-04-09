@@ -11,6 +11,7 @@
     "test": "vitest"
   },
   "dependencies": {
+    "@monaco-editor/react": "^4.7.0",
     "@ruby/wasm-wasi": "^2.9.4-2026-04-09-a",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
