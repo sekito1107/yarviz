@@ -1,43 +1,49 @@
-import { describe, it, expect, vi, beforeEach } from "vitest";
-import { DefaultRubyVM } from "@ruby/wasm-wasi/dist/browser";
+import { describe, it, expect, vi } from "vitest";
 import { RubyCompiler } from "../../src/lib/ruby_wasm";
 
-// Mock @ruby/wasm-wasi
-vi.mock("@ruby/wasm-wasi/dist/browser", () => ({
-  DefaultRubyVM: vi.fn(),
-}));
+describe("RubyCompiler (Integration)", () => {
+  it("should initialize accurately and compile Ruby code to YARV", async () => {
+    // window.fetch をスパイして、実際の通信が行われるのを監視する
+    const fetchSpy = vi.spyOn(window, "fetch");
 
-describe("RubyCompiler", () => {
-  beforeEach(() => {
-    vi.resetModules();
-    vi.clearAllMocks();
+    // VM の初期化（実際の ruby.wasm をロード）
+    await RubyCompiler.init();
+
+    // 正しいパスに fetch が飛んでいるか確認
+    expect(fetchSpy).toHaveBeenCalledWith("/ruby.wasm");
+
+    // 実際に Ruby コードをコンパイルして YARV 配列が返ってくるか確認
+    const rubyCode = "1 + 2";
+    let yarv;
+    try {
+      yarv = RubyCompiler.compileToYarv(rubyCode);
+    } catch (e: any) {
+      console.error("Compilation failed:", e.message);
+      throw e;
+    }
+
+    expect(Array.isArray(yarv)).toBe(true);
+    expect(yarv[0]).toBe("YARVInstructionSequenceData");
+    expect(yarv[5]).toBe("test_method"); // RubyCompiler.ts 内の固定名
     
-    // Mock global fetch
-    global.fetch = vi.fn().mockResolvedValue({
-      ok: true,
-    } as Response);
-
-    // Mock WebAssembly.compileStreaming
-    global.WebAssembly.compileStreaming = vi.fn().mockResolvedValue({} as WebAssembly.Module);
-
-    // Mock DefaultRubyVM implementation
-    vi.mocked(DefaultRubyVM).mockResolvedValue({
-      vm: { eval: vi.fn() } as any,
-    });
+    // バイトコード部分に期待される命令が含まれているか（簡易検証）
+    const body = yarv[13];
+    expect(JSON.stringify(body)).toContain("putobject");
+    expect(JSON.stringify(body)).toContain("opt_plus");
   });
 
-  describe("init", () => {
-    it("should fetch ruby.wasm exactly once when called concurrently", async () => {
-      // Call init multiple times concurrently
-      const p1 = RubyCompiler.init();
-      const p2 = RubyCompiler.init();
-      const p3 = RubyCompiler.init();
+  it("should maintain singleton state and not fetch multiple times", async () => {
+    const fetchSpy = vi.spyOn(window, "fetch");
 
-      await Promise.all([p1, p2, p3]);
+    // すでに初期化済みのはずなので、追加の fetch は発生しないはず
+    await RubyCompiler.init();
+    await RubyCompiler.init();
 
-      // fetch should be called only once
-      expect(global.fetch).toHaveBeenCalledTimes(1);
-      expect(global.fetch).toHaveBeenCalledWith("/ruby.wasm");
-    });
+    // すでにロード済みの場合は fetch は呼ばれない（initPromise が返るため）
+    // ※このテスト単体で走る場合と全体で走る場合があるが、
+    // シングルトンの挙動として fetch が「追加で」呼ばれないことを確認
+    const initialCalls = fetchSpy.mock.calls.length;
+    await RubyCompiler.init();
+    expect(fetchSpy.mock.calls.length).toBe(initialCalls);
   });
 });

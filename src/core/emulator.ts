@@ -22,6 +22,31 @@ export function boot(rawYarv: any[]): EmulatorState {
 }
 
 /**
+ * Returns the initial state or the next state based on the input.
+ */
+function getNextState(input: any[] | EmulatorState): EmulatorState {
+  return Array.isArray(input) ? boot(input) : step(input);
+}
+
+/**
+ * Executes the program and returns the full history of states.
+ */
+export function run(rawYarv: any[]): EmulatorState[] {
+  const result: EmulatorState[] = [];
+  const LIMIT = 10000;
+
+  let state = getNextState(rawYarv);
+  result.push(state);
+
+  while (state.frames.length > 0 && result.length < LIMIT) {
+    state = getNextState(state);
+    result.push(state);
+  }
+
+  return result;
+}
+
+/**
  * Executes a single step of the YARV emulator.
  * It fetches the current opcode from the bytecode at the Program Counter (PC),
  * decodes it using the instruction registry, and executes it.

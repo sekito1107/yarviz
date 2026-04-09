@@ -24,3 +24,5 @@ dist-ssr
 *.sw?
 /doc/meta/
 tsconfig.tsbuildinfo
+wasm-build/
+
