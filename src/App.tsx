@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { AnimatePresence } from 'framer-motion';
 import { useEmulatorStore } from './store/useEmulatorStore';
 import { LoadingScreen } from './components/LoadingScreen';
+import { SourceEditor } from './components/SourceEditor';
 
 export default function App() {
   const isWasmLoading = useEmulatorStore((state) => state.isWasmLoading);
@@ -27,10 +28,7 @@ export default function App() {
           </header>
 
           <main className="main-content">
-            <section className="panel-container glass-panel">
-              {/* Step 4: SourceEditor will go here */}
-              <p className="panel-info">Source Editor Loading...</p>
-            </section>
+            <SourceEditor />
 
             <div className="visualization-panel">
               <section className="panel-container glass-panel">
