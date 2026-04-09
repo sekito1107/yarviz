@@ -1,4 +1,4 @@
-import { EmulatorState } from "../core/types/emulator_state";
+import type { EmulatorState } from "../core/types/emulator_state";
 
 export interface EmulatorStore {
   isWasmLoading: boolean;
@@ -9,4 +9,6 @@ export interface EmulatorStore {
   initTask: () => Promise<void>;
   compile: (code: string) => void;
   stepForward: () => void;
+  stepBack: () => void;
+  goToStep: (index: number) => void;
 }
