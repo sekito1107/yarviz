@@ -7,6 +7,7 @@ export const useEmulatorStore = create<EmulatorStore>((set, get) => ({
   // State
   isWasmLoading: true,
   rawIseq: null,
+  rubyVersion: null,
   history: [],
   currentIndex: -1,
 
@@ -24,7 +25,8 @@ async function initWasmAction(set: any) {
   set({ isWasmLoading: true });
   try {
     await RubyCompiler.init();
-    set({ isWasmLoading: false });
+    const version = RubyCompiler.getVersion();
+    set({ isWasmLoading: false, rubyVersion: version });
   } catch (error) {
     console.error("Failed to initialize Ruby WASM:", error);
   }
