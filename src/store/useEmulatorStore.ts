@@ -1,24 +1,24 @@
 import { create } from "zustand";
 import { RubyCompiler } from "../lib/ruby_wasm";
-import { boot } from "../core/emulator";
-import { EmulatorStore } from "./types";
-
+import { run } from "../core/emulator";
+import type { EmulatorStore } from "./types";
 
 export const useEmulatorStore = create<EmulatorStore>((set, get) => ({
-
   // State
   isWasmLoading: true,
   rawIseq: null,
   history: [],
   currentIndex: -1,
 
-  // Actions (Thinned by moving implementation logic to Helper Actions)
+  // Actions
   initTask: () => initWasmAction(set),
   compile: (code) => compileCodeAction(set, code),
   stepForward: () => stepForwardAction(set, get),
+  stepBack: () => stepBackAction(set, get),
+  goToStep: (index) => goToStepAction(set, get, index),
 }));
 
-// Helper Actions (Business Logic)
+// Helper Actions
 
 async function initWasmAction(set: any) {
   set({ isWasmLoading: true });
@@ -33,11 +33,11 @@ async function initWasmAction(set: any) {
 function compileCodeAction(set: any, code: string) {
   try {
     const rawYarv = RubyCompiler.compileToYarv(code);
-    const initialState = boot(rawYarv);
+    const history = run(rawYarv);
 
     set({
       rawIseq: rawYarv,
-      history: [initialState],
+      history: history,
       currentIndex: 0,
     });
   } catch (error) {
@@ -45,11 +45,24 @@ function compileCodeAction(set: any, code: string) {
   }
 }
 
-
 function stepForwardAction(set: any, get: any) {
   const { history, currentIndex } = get();
-  if (currentIndex < 0 || currentIndex >= history.length) return;
-  
-  console.log("Step forward logic integration pending.");
+  if (currentIndex < history.length - 1) {
+    set({ currentIndex: currentIndex + 1 });
+  }
+}
+
+function stepBackAction(set: any, get: any) {
+  const { currentIndex } = get();
+  if (currentIndex > 0) {
+    set({ currentIndex: currentIndex - 1 });
+  }
+}
+
+function goToStepAction(set: any, get: any, index: number) {
+  const { history } = get();
+  if (index >= 0 && index < history.length) {
+    set({ currentIndex: index });
+  }
 }
 
