@@ -1,13 +1,13 @@
 import { useEffect } from 'react';
 import { AnimatePresence } from 'framer-motion';
-import { useEmulatorStore } from './store/useEmulatorStore';
+import { useRubyRuntimeStore } from './store/rubyRuntimeStore';
 import { LoadingScreen } from './components/LoadingScreen';
 import { SourceEditor } from './components/SourceEditor';
 
 export default function App() {
-  const isWasmLoading = useEmulatorStore((state) => state.isWasmLoading);
-  const rubyVersion = useEmulatorStore((state) => state.rubyVersion);
-  const initTask = useEmulatorStore((state) => state.initTask);
+  const isWasmLoading = useRubyRuntimeStore((state) => state.isWasmLoading);
+  const rubyVersion = useRubyRuntimeStore((state) => state.rubyVersion);
+  const initTask = useRubyRuntimeStore((state) => state.initTask);
 
   // Initialize Ruby WASM on mount
   useEffect(() => {
