@@ -26,6 +26,34 @@ body {
   width: 100vw;
 }
 
+/* Stable scrollbar gutter to prevent jumping layouts */
+.visualization-panel section,
+.value-stack-container,
+.instruction-container {
+  scrollbar-gutter: stable;
+}
+
+/* Custom Premium Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
 /* Glassmorphism utility */
 .glass-panel {
   background: var(--panel-bg);
@@ -130,6 +158,73 @@ body {
   padding: 1.25rem;
   display: flex;
   flex-direction: column;
+  overflow: hidden;
+}
+
+/* Panel header row containing title + controls */
+.panel-header-with-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid var(--border-color);
+  background: rgba(255, 255, 255, 0.02);
+}
+
+/* Scrollable body inside a panel */
+.panel-body {
+  padding: 1.5rem;
+  flex: 1;
+  overflow-y: auto;
+}
+
+/* Remove all padding from a panel-container (used for InstructionList) */
+.no-padding {
+  padding: 0 !important;
+}
+
+/* Execution Controls */
+.execution-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.control-btn {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: var(--text-primary);
+  padding: 0.4rem 0.8rem;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  font-family: 'Outfit', sans-serif;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.control-btn:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.1);
+  transform: translateY(-1px);
+}
+
+.control-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.control-btn.primary {
+  background: var(--accent-color);
+  border-color: transparent;
+  box-shadow: 0 0 10px var(--accent-glow);
+}
+
+.step-counter {
+  font-family: 'Inter', monospace;
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  min-width: 80px;
+  text-align: center;
 }
 
 .panel-title {
@@ -394,4 +489,39 @@ body {
   font-size: 0.85rem;
   opacity: 0.5;
   font-style: italic;
+}
+
+/* Result Card: displayed when program execution completes */
+.result-card {
+  display: flex !important;
+  flex-direction: column;
+  margin: 0; 
+  width: 100%;
+  /* Perfectly match value-card padding */
+  padding: 0.75rem 1rem !important; 
+  border: 1px solid rgba(245, 158, 11, 0.4) !important;
+  border-left: 3px solid #f59e0b !important; /* Unified accent border */
+  background: linear-gradient(
+    135deg,
+    rgba(245, 158, 11, 0.1) 0%,
+    rgba(120, 53, 15, 0.05) 100%
+  ) !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2), 0 0 15px rgba(245, 158, 11, 0.1) !important;
+  position: relative;
+}
+
+.value-label {
+  font-size: 0.6rem;
+  font-weight: 800;
+  letter-spacing: 0.2em;
+  color: #fb7185;
+  margin-bottom: 0.2rem;
+  opacity: 0.9;
+}
+
+.value-content.highlight {
+  font-size: 1.1rem !important; /* Matches standard value-content size */
+  font-weight: 700 !important;
+  color: #fbbf24 !important;
+  filter: drop-shadow(0 0 8px rgba(245, 158, 11, 0.3));
 }
