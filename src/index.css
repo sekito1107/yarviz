@@ -391,17 +391,25 @@ body {
   grid-template-columns: 50px 70px 180px 1fr; /* Same grid as header */
   padding: 0.6rem 1.5rem;
   align-items: center;
-  transition: all 0.2s ease;
+  transition: all 0.15s ease;
   border-left: 4px solid transparent;
+  cursor: pointer; /* Indicates it's clickable */
+  user-select: none;
 }
 
 .instruction-row:hover {
-  background: rgba(255, 255, 255, 0.02);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.instruction-row:active {
+  background: rgba(255, 255, 255, 0.08);
+  transform: translateY(1px); /* Simple click feedback */
 }
 
 .instruction-row.active {
   background: rgba(224, 17, 95, 0.1);
   border-left-color: var(--accent-color);
+  box-shadow: inset 10px 0 20px -10px rgba(224, 17, 95, 0.2);
 }
 
 /* Columns in Content Row */
