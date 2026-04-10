@@ -196,3 +196,57 @@ body {
   overflow: hidden;
   border: 1px solid var(--border-color);
 }
+
+/* Value Stack Styles */
+.value-stack-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  overflow-y: auto;
+  flex: 1;
+  padding-right: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.value-card {
+  padding: 0.75rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  transition: all 0.3s ease;
+  border-left: 3px solid transparent;
+}
+
+.value-card.active {
+  border-left-color: var(--accent-color);
+  background: rgba(224, 17, 95, 0.05);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+.value-type {
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-secondary);
+  font-weight: 700;
+  opacity: 0.8;
+}
+
+.value-content {
+  font-family: 'Inter', sans-serif;
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.empty-stack-message {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100px;
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  font-style: italic;
+  opacity: 0.5;
+}
+
