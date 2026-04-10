@@ -155,25 +155,26 @@ body {
 }
 
 .panel-container {
-  padding: 1.25rem;
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  padding: 0; /* Remove container padding so headers can span full width */
 }
 
-/* Panel header row containing title + controls */
+/* Unified Panel header row containing title + controls */
 .panel-header-with-actions {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1rem 1.5rem;
+  padding: 0.75rem 1.25rem; /* Balanced padding */
+  min-height: 3rem;
   border-bottom: 1px solid var(--border-color);
   background: rgba(255, 255, 255, 0.02);
 }
 
 /* Scrollable body inside a panel */
 .panel-body {
-  padding: 1.5rem;
+  padding: 1.25rem; /* Content spacing moved here */
   flex: 1;
   overflow-y: auto;
 }
@@ -230,10 +231,10 @@ body {
 .panel-title {
   font-size: 0.9rem;
   font-weight: 600;
-  margin-bottom: 0.75rem;
   color: var(--text-primary);
   text-transform: uppercase;
   letter-spacing: 0.05em;
+  margin: 0; /* Reset margin for better alignment in flex headers */
 }
 
 .panel-info {
