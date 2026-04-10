@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { RubyCompiler } from "../lib/ruby_wasm";
 import { run } from "../core/emulator";
-import type { EmulatorStore } from "./types";
+import type { EmulatorStore, ParsedInstruction } from "./types";
 
 /**
  * Store for managing YARV emulator execution state and history.
@@ -10,6 +10,7 @@ import type { EmulatorStore } from "./types";
 export const useEmulatorStore = create<EmulatorStore>((set, get) => ({
   // --- State ---
   rawIseq: null,
+  parsedInstructions: [],
   history: [],
   currentIndex: -1,
 
@@ -34,15 +35,38 @@ export const useEmulatorStore = create<EmulatorStore>((set, get) => ({
 
   /**
    * Compiles Ruby code into YARV and initializes history.
+   * Derives parsedInstructions once from the first frame's ISeq
+   * so UI can display instructions without any runtime computation.
    */
   compile(code: string) {
     try {
       const rawYarv = RubyCompiler.compileToYarv(code);
       const history = run(rawYarv);
 
+      // Derive display-ready instruction list from the first frame's ISeq.
+      // Using lineMap offsets as boundaries to slice the flat bytecode.
+      const iseq = history[0]?.frames[0]?.iseq;
+      const parsedInstructions: ParsedInstruction[] = [];
+
+      if (iseq) {
+        const { bytecode, lineMap } = iseq;
+        const offsets = Object.keys(lineMap).map(Number).sort((a, b) => a - b);
+
+        offsets.forEach((offset, index) => {
+          const nextOffset = offsets[index + 1] ?? bytecode.length;
+          parsedInstructions.push({
+            offset,
+            opcode: String(bytecode[offset]),
+            operands: bytecode.slice(offset + 1, nextOffset) as (string | number)[],
+            line: lineMap[offset]!,
+          });
+        });
+      }
+
       set({
         rawIseq: rawYarv,
-        history: history,
+        parsedInstructions,
+        history,
         currentIndex: 0,
       });
     } catch (error) {
