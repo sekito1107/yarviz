@@ -4,6 +4,7 @@ import { useRubyRuntimeStore } from './store/rubyRuntimeStore';
 import { LoadingScreen } from './components/LoadingScreen';
 import { SourceEditor } from './components/SourceEditor';
 import { ValueStack } from './components/ValueStack';
+import { InstructionList } from './components/InstructionList';
 
 export default function App() {
   const isWasmLoading = useRubyRuntimeStore((state) => state.isWasmLoading);
@@ -37,9 +38,7 @@ export default function App() {
                 <ValueStack />
               </section>
               <section className="panel-container glass-panel">
-                {/* Step 5: InstructionList will go here */}
-                <h2 className="panel-title">YARV Instructions</h2>
-                <p className="panel-info">Compile code to see instructions</p>
+                <InstructionList />
               </section>
             </div>
           </main>
