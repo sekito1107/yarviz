@@ -47,6 +47,7 @@ export default function App() {
             <SourceEditor />
 
             <div className="visualization-panel">
+              {/* Top Panel: Controls and Stack */}
               <section className="panel-container glass-panel">
                 <header className="panel-header-with-actions">
                   <h2 className="panel-title">Execution Controls</h2>
@@ -82,12 +83,15 @@ export default function App() {
                   )}
                 </header>
                 <div className="panel-body">
-                  <h3 className="section-subtitle">Value Stack</h3>
                   <ValueStack />
                 </div>
               </section>
 
-              <section className="panel-container glass-panel no-padding">
+              {/* Bottom Panel: Instruction List */}
+              <section className="panel-container glass-panel">
+                <header className="panel-header-with-actions">
+                  <h2 className="panel-title">Instructions</h2>
+                </header>
                 <InstructionList />
               </section>
             </div>
