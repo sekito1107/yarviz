@@ -158,30 +158,50 @@ body {
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  padding: 0; /* Remove container padding so headers can span full width */
+  padding: 1.25rem;
+  height: 100%; /* Force full height in grid */
+  min-height: 0; /* Allow shrinking if needed, prevents overflow-based expansion */
 }
 
-/* Unified Panel header row containing title + controls */
+/* Unified Panel header row */
 .panel-header-with-actions {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0.75rem 1.25rem; /* Balanced padding */
-  min-height: 3rem;
+  margin: -1.25rem -1.25rem 1.25rem -1.25rem;
+  padding: 0.75rem 1.25rem;
+  min-height: 3.25rem;
   border-bottom: 1px solid var(--border-color);
   background: rgba(255, 255, 255, 0.02);
+  flex-shrink: 0; /* Header should not shrink */
 }
 
-/* Scrollable body inside a panel */
+/* Standard scrollable body for panels */
 .panel-body {
-  padding: 1.25rem; /* Content spacing moved here */
+  padding: 0;
   flex: 1;
   overflow-y: auto;
+  min-height: 0; /* Essential for flex-grow to work inside nested flex */
+  display: flex;
+  flex-direction: column;
 }
 
-/* Remove all padding from a panel-container (used for InstructionList) */
-.no-padding {
-  padding: 0 !important;
+/* Specific styling for the old SourceEditor header to prevent collision */
+.panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  flex-shrink: 0;
+}
+
+.panel-title {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin: 0;
 }
 
 /* Execution Controls */
@@ -198,7 +218,7 @@ body {
   padding: 0.4rem 0.8rem;
   border-radius: 6px;
   font-size: 0.8rem;
-  font-family: 'Outfit', sans-serif;
+  font-family: inherit;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s;
@@ -226,20 +246,6 @@ body {
   color: var(--text-secondary);
   min-width: 80px;
   text-align: center;
-}
-
-.panel-title {
-  font-size: 0.9rem;
-  font-weight: 600;
-  color: var(--text-primary);
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  margin: 0; /* Reset margin for better alignment in flex headers */
-}
-
-.panel-info {
-  color: var(--text-secondary);
-  font-size: 0.85rem;
 }
 
 .app-footer {

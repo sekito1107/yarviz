@@ -3,6 +3,9 @@ import Editor from '@monaco-editor/react';
 import { useEmulatorStore } from '../store/emulatorStore';
 import { RUBY_EDITOR_PROPS } from '../config/editorConfig';
 
+/**
+ * Standard Source Code Editor component.
+ */
 export function SourceEditor() {
   const [localCode, setLocalCode] = useState("1 + 2");
   const compile = useEmulatorStore((state) => state.compile);
