@@ -9,6 +9,7 @@ describe("useEmulatorStore", () => {
 
     useEmulatorStore.setState({
       rawIseq: null,
+      parsedInstructions: [],
       history: [],
       currentIndex: -1,
     });
@@ -17,6 +18,7 @@ describe("useEmulatorStore", () => {
   it("should have initial state", () => {
     const state = useEmulatorStore.getState();
     expect(state.rawIseq).toBeNull();
+    expect(state.parsedInstructions).toEqual([]);
     expect(state.history).toEqual([]);
     expect(state.currentIndex).toBe(-1);
   });
@@ -31,6 +33,18 @@ describe("useEmulatorStore", () => {
       expect(state.rawIseq).toBeDefined();
       expect(state.history.length).toBeGreaterThan(0);
       expect(state.currentIndex).toBe(0);
+    });
+
+    it("should correctly parse opcodes and operands for '1 + 2'", () => {
+      useEmulatorStore.getState().compile("1 + 2");
+      const { parsedInstructions } = useEmulatorStore.getState();
+
+      // putobject_INT2FIX_1_(no operands), putobject 2, opt_plus, leave
+      expect(parsedInstructions).toHaveLength(4);
+      expect(parsedInstructions[0]).toMatchObject({ offset: 0, opcode: "putobject_INT2FIX_1_", operands: [] });
+      expect(parsedInstructions[1]).toMatchObject({ offset: 1, opcode: "putobject", operands: [2] });
+      expect(parsedInstructions[2]).toMatchObject({ offset: 3, opcode: "opt_plus" });
+      expect(parsedInstructions[3]).toMatchObject({ offset: 5, opcode: "leave", operands: [] });
     });
   });
 
