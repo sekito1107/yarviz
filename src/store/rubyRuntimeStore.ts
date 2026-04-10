@@ -5,7 +5,7 @@ import type { RubyRuntimeStore } from "./types";
 /**
  * Store for managing the Ruby WASM runtime environment.
  */
-export const useRubyRuntimeStore = create<RubyRuntimeStore>((set) => ({
+export const useRubyRuntimeStore = create<RubyRuntimeStore>((set, get) => ({
   // --- State ---
   isWasmLoading: true,
   rubyVersion: null,
