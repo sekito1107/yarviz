@@ -3,6 +3,7 @@ import { AnimatePresence } from 'framer-motion';
 import { useRubyRuntimeStore } from './store/rubyRuntimeStore';
 import { LoadingScreen } from './components/LoadingScreen';
 import { SourceEditor } from './components/SourceEditor';
+import { ValueStack } from './components/ValueStack';
 
 export default function App() {
   const isWasmLoading = useRubyRuntimeStore((state) => state.isWasmLoading);
@@ -32,9 +33,8 @@ export default function App() {
 
             <div className="visualization-panel">
               <section className="panel-container glass-panel">
-                {/* Step 6: ValueStack will go here */}
                 <h2 className="panel-title">Value Stack</h2>
-                <p className="panel-info">Waiting for execution...</p>
+                <ValueStack />
               </section>
               <section className="panel-container glass-panel">
                 {/* Step 5: InstructionList will go here */}

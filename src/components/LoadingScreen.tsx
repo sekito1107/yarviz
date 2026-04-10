@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 
-export const LoadingScreen = () => {
+export function LoadingScreen() {
   return (
     <motion.div 
       className="loading-screen"
@@ -28,4 +28,4 @@ export const LoadingScreen = () => {
       </motion.div>
     </motion.div>
   );
-};
+}

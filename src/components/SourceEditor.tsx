@@ -3,7 +3,7 @@ import Editor from '@monaco-editor/react';
 import { useEmulatorStore } from '../store/emulatorStore';
 import { RUBY_EDITOR_PROPS } from '../config/editorConfig';
 
-export const SourceEditor = () => {
+export function SourceEditor() {
   const [localCode, setLocalCode] = useState("1 + 2");
   const compile = useEmulatorStore((state) => state.compile);
 
@@ -25,4 +25,4 @@ export const SourceEditor = () => {
       </div>
     </div>
   );
-};
+}
