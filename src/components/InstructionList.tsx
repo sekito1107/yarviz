@@ -4,6 +4,9 @@ import { OperandValue } from "./InstructionList/OperandValue";
 /**
  * Component for displaying YARV instructions in a tabular format.
  * Includes a fixed header and 4 distinct columns for Line, PC, Opcode, and Arguments.
+ * 
+ * Note: Panel titles are managed by the parent layout (App.tsx) to ensure
+ * visual consistency across all panels.
  */
 export function InstructionList() {
   const parsedInstructions = useEmulatorStore((state) => state.parsedInstructions);
@@ -13,7 +16,6 @@ export function InstructionList() {
   if (parsedInstructions.length === 0) {
     return (
       <div className="instruction-list empty">
-        <div className="panel-header">Instructions</div>
         <div className="instruction-placeholder">
           <p>Compile some Ruby code to see its YARV instructions.</p>
         </div>
@@ -23,8 +25,6 @@ export function InstructionList() {
 
   return (
     <div className="instruction-list">
-      <div className="panel-header">Instructions</div>
-      
       <div className="instruction-header">
         <span className="col-line">Line</span>
         <span className="col-pc">PC</span>
