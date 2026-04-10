@@ -5,13 +5,33 @@ import { OperandValue } from "./InstructionList/OperandValue";
  * Component for displaying YARV instructions in a tabular format.
  * Includes a fixed header and 4 distinct columns for Line, PC, Opcode, and Arguments.
  * 
- * Note: Panel titles are managed by the parent layout (App.tsx) to ensure
- * visual consistency across all panels.
+ * Interactive Feature: Clicking a row jumps the emulator to the moment 
+ * that specific instruction was executed as the top frame.
  */
 export function InstructionList() {
   const parsedInstructions = useEmulatorStore((state) => state.parsedInstructions);
+  const history = useEmulatorStore((state) => state.history);
+  const goToStep = useEmulatorStore((state) => state.goToStep);
   const activeFrame = useEmulatorStore((state) => state.activeFrame());
   const pc = activeFrame?.pc ?? -1;
+
+  // Jump to the first history entry where this instruction is the top of the stack.
+  const handleInstructionClick = (offset: number) => {
+    if (history.length === 0 || !history[0].frames[0]) return;
+
+    // We assume the current list displays the Root ISeq for now.
+    // In multi-frame scenarios, we would compare with the ISeq actually being displayed.
+    const rootISeq = history[0].frames[0].iseq;
+
+    const targetStepIndex = history.findIndex(step => {
+      const topFrame = step.frames[step.frames.length - 1];
+      return topFrame && topFrame.iseq === rootISeq && topFrame.pc === offset;
+    });
+
+    if (targetStepIndex !== -1) {
+      goToStep(targetStepIndex);
+    }
+  };
 
   if (parsedInstructions.length === 0) {
     return (
@@ -45,6 +65,8 @@ export function InstructionList() {
               key={instr.offset}
               className={`instruction-row ${isCurrent ? "active" : ""}`}
               id={`instr-${instr.offset}`}
+              onClick={() => handleInstructionClick(instr.offset)}
+              title={`Jump to step executing ${instr.opcode}`}
             >
               <div className="col-line">
                 {showLine ? instr.line : ""}
