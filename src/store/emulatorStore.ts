@@ -13,16 +13,12 @@ export const useEmulatorStore = create<EmulatorStore>((set, get) => ({
   history: [],
   currentIndex: -1,
 
-  // --- Getters (Selectors) ---
-
   /**
    * Returns the currently active frame.
    * Returns null if no history exists or currentIndex is invalid.
    */
   activeFrame() {
-    const { history, currentIndex } = get();
-    const state = history[currentIndex];
-    return state?.frames?.at(-1) ?? null;
+    return this.history[this.currentIndex]?.frames?.at(-1) ?? null;
   },
 
   /**
@@ -32,6 +28,7 @@ export const useEmulatorStore = create<EmulatorStore>((set, get) => ({
   activeStack() {
     return this.activeFrame()?.stack ?? null;
   },
+
 
   // --- Actions ---
 
