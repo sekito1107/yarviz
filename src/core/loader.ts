@@ -45,6 +45,10 @@ function parseBody(rawBody: any[]): { bytecode: (string | number)[], lineMap: Re
   for (const entry of rawBody) {
     if (typeof entry === 'number') {
       currentLine = entry;
+    } else if (typeof entry === 'string') {
+      // Ignore trace markers like "RUBY_EVENT_LINE". 
+      // These are used for debug hooks/TracePoint which are not yet implemented.
+      continue;
     } else if (Array.isArray(entry)) {
       const offset = bytecode.length;
       lineMap[offset] = currentLine;
