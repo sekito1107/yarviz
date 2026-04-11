@@ -1,0 +1,52 @@
+/* App-wide structural layout */
+.app-container {
+  display: grid;
+  grid-template-rows: 60px 1fr 40px;
+  height: 100vh;
+  padding: 1rem;
+  gap: 1rem;
+}
+
+.main-content {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 1rem;
+  overflow: hidden;
+}
+
+.visualization-panel {
+  display: grid;
+  grid-template-rows: 1fr 1.5fr;
+  gap: 1rem;
+  overflow: hidden;
+}
+
+.app-header {
+  display: flex;
+  align-items: center;
+  padding: 0 1.5rem;
+}
+
+.logo {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--accent-color);
+  letter-spacing: -0.02em;
+}
+
+.subtitle {
+  margin-left: 1.2rem;
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  font-weight: 500;
+  opacity: 0.8;
+}
+
+.app-footer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  opacity: 0.6;
+}

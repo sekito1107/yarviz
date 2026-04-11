@@ -1,0 +1,47 @@
+/* Standard Panel System */
+.panel-container {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  padding: 1.25rem;
+  height: 100%;
+  min-height: 0;
+}
+
+.panel-header-with-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: -1.25rem -1.25rem 1.25rem -1.25rem;
+  padding: 0.75rem 1.25rem;
+  min-height: 3.25rem;
+  border-bottom: 1px solid var(--border-color);
+  background: rgba(255, 255, 255, 0.02);
+  flex-shrink: 0;
+}
+
+.panel-body {
+  padding: 0;
+  flex: 1;
+  overflow-y: auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  flex-shrink: 0;
+}
+
+.panel-title {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin: 0;
+}

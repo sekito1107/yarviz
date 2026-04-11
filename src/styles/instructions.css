@@ -1,0 +1,132 @@
+/* Instruction List (Table-like Grid) */
+.instruction-list {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  position: relative;
+}
+
+.instruction-header {
+  display: grid;
+  grid-template-columns: 50px 70px 180px 1fr;
+  padding: 1.25rem 1.5rem;
+  background: rgba(255, 255, 255, 0.05);
+  border-bottom: 2px solid var(--border-color);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  backdrop-filter: blur(16px);
+}
+
+.instruction-header span {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-secondary);
+  font-family: 'Inter', sans-serif;
+}
+
+.instruction-container {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 1rem 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.instruction-row {
+  display: grid;
+  grid-template-columns: 50px 70px 180px 1fr;
+  padding: 0.6rem 1.5rem;
+  align-items: center;
+  transition: all 0.15s ease;
+  border-left: 4px solid transparent;
+  cursor: pointer;
+  user-select: none;
+}
+
+.instruction-row:hover {
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.instruction-row.active {
+  background: rgba(224, 17, 95, 0.1);
+  border-left-color: var(--accent-color);
+  box-shadow: inset 10px 0 20px -10px rgba(224, 17, 95, 0.2);
+}
+
+.instruction-row .col-line {
+  color: #475569;
+  font-family: 'Inter', monospace;
+  font-size: 0.75rem;
+  text-align: right;
+  padding-right: 1.5rem;
+}
+
+.instruction-row .col-pc {
+  color: var(--accent-color);
+  opacity: 0.8;
+  font-family: 'Inter', monospace;
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+.instruction-row .col-opcode {
+  font-family: 'Outfit', sans-serif;
+  font-weight: 600;
+  color: var(--text-primary);
+  font-size: 0.95rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  padding-right: 1rem;
+}
+
+.operand-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+.val-primitive {
+  background: rgba(255, 255, 255, 0.05);
+  padding: 0.15rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  font-family: 'Inter', monospace;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.val-object {
+  display: inline-flex;
+  gap: 0.5rem;
+  background: rgba(255, 255, 255, 0.03);
+  padding: 0.1rem 0.4rem;
+  border-radius: 4px;
+  border: 1px dashed rgba(255, 255, 255, 0.1);
+}
+
+.object-property {
+  display: flex;
+  gap: 0.25rem;
+  font-size: 0.75rem;
+  font-family: 'Inter', monospace;
+}
+
+.prop-key { color: #6366f1; font-weight: 500; }
+.prop-val { color: #10b981; }
+
+.instruction-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100px;
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  opacity: 0.5;
+  font-style: italic;
+}
