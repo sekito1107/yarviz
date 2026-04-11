@@ -18,6 +18,7 @@ export function boot(rawYarv: any[]): EmulatorState {
         locals: {},
       },
     ],
+    methods: {},
   };
 }
 
