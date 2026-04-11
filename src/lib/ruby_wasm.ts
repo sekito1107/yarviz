@@ -42,5 +42,16 @@ RUBY
 
     const jsonString = vmInstance.eval(script).toString();
     return JSON.parse(jsonString); // Parse the resulting JSON string back into a JS array
+  },
+
+  /**
+   * Returns a simple Ruby version string (e.g., "ruby 4.0.0").
+   */
+  getVersion(): string {
+    if (!vmInstance) {
+      throw new Error("RubyVM is not initialized.");
+    }
+    const version = vmInstance.eval("RUBY_VERSION").toString();
+    return `ruby ${version}`;
   }
 };

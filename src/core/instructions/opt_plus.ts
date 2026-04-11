@@ -1,5 +1,4 @@
 import { Base } from './base';
-import type { ISeqEntry } from '../types/frame';
 
 // YARV format: [:opt_plus, call_data]
 export default class OptPlus extends Base {

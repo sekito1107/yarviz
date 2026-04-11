@@ -1,0 +1,563 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@400;500;600;700&display=swap');
+
+:root {
+  --bg-color: #0c0e12;
+  --panel-bg: rgba(23, 27, 34, 0.7);
+  --border-color: rgba(255, 255, 255, 0.1);
+  --text-primary: #f8fafc;
+  --text-secondary: #94a3b8;
+  --accent-color: #e0115f;
+  --accent-glow: rgba(224, 17, 95, 0.4);
+  --font-family: 'Outfit', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: var(--bg-color);
+  color: var(--text-primary);
+  font-family: var(--font-family);
+  overflow: hidden;
+  height: 100vh;
+  width: 100vw;
+}
+
+/* Stable scrollbar gutter to prevent jumping layouts */
+.visualization-panel section,
+.value-stack-container,
+.instruction-container {
+  scrollbar-gutter: stable;
+}
+
+/* Custom Premium Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Glassmorphism utility */
+.glass-panel {
+  background: var(--panel-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+}
+
+/* Utilities */
+.h-full { height: 100%; }
+.m-0 { margin: 0; }
+.flex-1 { flex: 1; }
+
+/* Loading Screen Styles */
+.loading-screen {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-color);
+  z-index: 9999;
+}
+
+.gem-icon {
+  width: 80px;
+  height: 80px;
+  background: var(--accent-color);
+  clip-path: polygon(50% 0%, 100% 38%, 81% 100%, 19% 100%, 0% 38%);
+  box-shadow: 0 0 40px var(--accent-glow);
+  animation: pulse 2s infinite ease-in-out;
+  margin-bottom: 2rem;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); opacity: 0.8; box-shadow: 0 0 20px var(--accent-glow); }
+  50% { transform: scale(1.1); opacity: 1; box-shadow: 0 0 50px var(--accent-glow); }
+  100% { transform: scale(1); opacity: 0.8; box-shadow: 0 0 20px var(--accent-glow); }
+}
+
+.loading-text {
+  font-size: 1.1rem;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  color: var(--text-secondary);
+}
+
+.loading-sub-text {
+  margin-top: 0.5rem;
+  font-size: 0.85rem;
+  color: #475569;
+}
+
+/* App Layout */
+.app-container {
+  display: grid;
+  grid-template-rows: 60px 1fr 40px;
+  height: 100vh;
+  padding: 1rem;
+  gap: 1rem;
+}
+
+.main-content {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 1rem;
+  overflow: hidden;
+}
+
+.visualization-panel {
+  display: grid;
+  grid-template-rows: 1fr 1.5fr;
+  gap: 1rem;
+  overflow: hidden;
+}
+
+/* Refactored Layout Classes */
+.app-header {
+  display: flex;
+  align-items: center;
+  padding: 0 1.5rem;
+}
+
+.logo {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--accent-color);
+  letter-spacing: -0.02em;
+}
+
+.subtitle {
+  margin-left: 1.2rem;
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  font-weight: 500;
+  opacity: 0.8;
+}
+
+.panel-container {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  padding: 1.25rem;
+  height: 100%; /* Force full height in grid */
+  min-height: 0; /* Allow shrinking if needed, prevents overflow-based expansion */
+}
+
+/* Unified Panel header row */
+.panel-header-with-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: -1.25rem -1.25rem 1.25rem -1.25rem;
+  padding: 0.75rem 1.25rem;
+  min-height: 3.25rem;
+  border-bottom: 1px solid var(--border-color);
+  background: rgba(255, 255, 255, 0.02);
+  flex-shrink: 0; /* Header should not shrink */
+}
+
+/* Standard scrollable body for panels */
+.panel-body {
+  padding: 0;
+  flex: 1;
+  overflow-y: auto;
+  min-height: 0; /* Essential for flex-grow to work inside nested flex */
+  display: flex;
+  flex-direction: column;
+}
+
+/* Specific styling for the old SourceEditor header to prevent collision */
+.panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  flex-shrink: 0;
+}
+
+.panel-title {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin: 0;
+}
+
+/* Execution Controls */
+.execution-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.control-btn {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: var(--text-primary);
+  padding: 0.4rem 0.8rem;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  font-family: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.control-btn:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.1);
+  transform: translateY(-1px);
+}
+
+.control-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.control-btn.primary {
+  background: var(--accent-color);
+  border-color: transparent;
+  box-shadow: 0 0 10px var(--accent-glow);
+}
+
+.step-counter {
+  font-family: 'Inter', monospace;
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  min-width: 80px;
+  text-align: center;
+}
+
+.app-footer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  opacity: 0.6;
+}
+
+/* Source Editor specific styles */
+.panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.compile-button {
+  padding: 0.4rem 1.25rem;
+  background-color: var(--accent-color);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-family: inherit;
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 12px var(--accent-glow);
+}
+
+.compile-button:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.1);
+  box-shadow: 0 6px 16px var(--accent-glow);
+}
+
+.compile-button:active {
+  transform: translateY(0);
+}
+
+.editor-wrapper {
+  flex: 1;
+  min-height: 0;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid var(--border-color);
+}
+
+/* Value Stack Styles */
+.value-stack-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  overflow-y: auto;
+  flex: 1;
+  padding-right: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.value-card {
+  padding: 0.75rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  transition: all 0.3s ease;
+  border-left: 3px solid transparent;
+}
+
+.value-card.active {
+  border-left-color: var(--accent-color);
+  background: rgba(224, 17, 95, 0.05);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+.value-type {
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-secondary);
+  font-weight: 700;
+  opacity: 0.8;
+}
+
+.value-content {
+  font-family: 'Inter', sans-serif;
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.empty-stack-message {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100px;
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  font-style: italic;
+  opacity: 0.5;
+}
+
+/* Instruction List Styles (Table-like Grid) */
+.instruction-list {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  position: relative;
+}
+
+/* Fixed Header */
+.instruction-header {
+  display: grid;
+  grid-template-columns: 50px 70px 180px 1fr; /* PC: 70px, Opcode: 180px */
+  padding: 1.25rem 1.5rem;
+  background: rgba(255, 255, 255, 0.05);
+  border-bottom: 2px solid var(--border-color);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  backdrop-filter: blur(16px);
+}
+
+/* Header Labels - Unified styling for all columns */
+.instruction-header span {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-secondary);
+  font-family: 'Inter', sans-serif;
+}
+
+.instruction-container {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 1rem 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.instruction-row {
+  display: grid;
+  grid-template-columns: 50px 70px 180px 1fr; /* Same grid as header */
+  padding: 0.6rem 1.5rem;
+  align-items: center;
+  transition: all 0.15s ease;
+  border-left: 4px solid transparent;
+  cursor: pointer; /* Indicates it's clickable */
+  user-select: none;
+}
+
+.instruction-row:hover {
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.instruction-row:active {
+  background: rgba(255, 255, 255, 0.08);
+  transform: translateY(1px); /* Simple click feedback */
+}
+
+.instruction-row.active {
+  background: rgba(224, 17, 95, 0.1);
+  border-left-color: var(--accent-color);
+  box-shadow: inset 10px 0 20px -10px rgba(224, 17, 95, 0.2);
+}
+
+/* Columns in Content Row */
+.instruction-row .col-line {
+  color: #475569;
+  font-family: 'Inter', monospace;
+  font-size: 0.75rem;
+  text-align: right;
+  padding-right: 1.5rem;
+}
+
+.instruction-row .col-pc {
+  color: var(--accent-color);
+  opacity: 0.8;
+  font-family: 'Inter', monospace;
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+.instruction-row .col-opcode {
+  font-family: 'Outfit', sans-serif;
+  font-weight: 600;
+  color: var(--text-primary);
+  font-size: 0.95rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  padding-right: 1rem;
+}
+
+.instruction-row .col-operands {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.operand-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+/* Operand Styles */
+.val-primitive {
+  background: rgba(255, 255, 255, 0.05);
+  padding: 0.15rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  font-family: 'Inter', monospace;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* Nested Object Display */
+.val-object {
+  display: inline-flex;
+  gap: 0.5rem;
+  background: rgba(255, 255, 255, 0.03);
+  padding: 0.1rem 0.4rem;
+  border-radius: 4px;
+  border: 1px dashed rgba(255, 255, 255, 0.1);
+}
+
+.object-property {
+  display: flex;
+  gap: 0.25rem;
+  font-size: 0.75rem;
+  font-family: 'Inter', monospace;
+}
+
+.prop-key {
+  color: #6366f1; /* Indigo key */
+  font-weight: 500;
+}
+
+.prop-val {
+  color: #10b981; /* Emerald value */
+}
+
+.instruction-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100px;
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  opacity: 0.5;
+  font-style: italic;
+}
+
+/* Result Card: displayed when program execution completes */
+.result-card {
+  display: flex !important;
+  flex-direction: column;
+  margin: 0; 
+  width: 100%;
+  /* Perfectly match value-card padding */
+  padding: 0.75rem 1rem !important; 
+  border: 1px solid rgba(245, 158, 11, 0.4) !important;
+  border-left: 3px solid #f59e0b !important; /* Unified accent border */
+  background: linear-gradient(
+    135deg,
+    rgba(245, 158, 11, 0.1) 0%,
+    rgba(120, 53, 15, 0.05) 100%
+  ) !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2), 0 0 15px rgba(245, 158, 11, 0.1) !important;
+  position: relative;
+}
+
+.value-label {
+  font-size: 0.6rem;
+  font-weight: 800;
+  letter-spacing: 0.2em;
+  color: #fb7185;
+  margin-bottom: 0.2rem;
+  opacity: 0.9;
+}
+
+.value-content.highlight {
+  font-size: 1.1rem !important; /* Matches standard value-content size */
+  font-weight: 700 !important;
+  color: #fbbf24 !important;
+  filter: drop-shadow(0 0 8px rgba(245, 158, 11, 0.3));
+}
+
+/* Editor Specific Highlight Style (Using Medium Emerald for Balance) */
+:root {
+  --editor-accent: #4ade80;
+  --editor-accent-glow: rgba(74, 222, 128, 0.25);
+}
+
+.active-line-decoration {
+  background: var(--editor-accent) !important;
+  width: 4px !important;
+  margin-left: 2px;
+  box-shadow: 0 0 10px var(--editor-accent-glow);
+  border-radius: 2px;
+}
+
+.active-line-content {
+  background: var(--editor-accent-glow) !important;
+  border-top: 1px solid rgba(74, 222, 128, 0.15);
+  border-bottom: 1px solid rgba(74, 222, 128, 0.15);
+  display: block;
+}
