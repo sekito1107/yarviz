@@ -30,7 +30,6 @@ export const useEmulatorStore = create<EmulatorStore>((set, get) => ({
     return this.activeFrame()?.stack ?? null;
   },
 
-
   // --- Actions ---
 
   /**
