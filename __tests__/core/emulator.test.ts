@@ -72,7 +72,8 @@ describe('Emulator.step', () => {
         stack: [],
         iseq: iseq,
         locals: {},
-      }]
+      }],
+      methods: {},
     };
 
     const state1 = step(initialState);
@@ -126,6 +127,7 @@ describe('Emulator.boot', () => {
     expect(frame.pc).toBe(0);
     expect(frame.stack).toEqual([]);
     expect(frame.locals).toEqual({});
+    expect(state.methods).toEqual({});
   });
 });
 
