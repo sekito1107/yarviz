@@ -1,0 +1,24 @@
+/* Source Editor Specific */
+.editor-wrapper {
+  flex: 1;
+  min-height: 0;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid var(--border-color);
+}
+
+/* Execution Highlighting synchronized with standard debugger logic */
+.active-line-decoration {
+  background: var(--editor-accent) !important;
+  width: 4px !important;
+  margin-left: 2px;
+  box-shadow: 0 0 10px var(--editor-accent-glow);
+  border-radius: 2px;
+}
+
+.active-line-content {
+  background: var(--editor-accent-glow) !important;
+  border-top: 1px solid rgba(74, 222, 128, 0.15);
+  border-bottom: 1px solid rgba(74, 222, 128, 0.15);
+  display: block;
+}
